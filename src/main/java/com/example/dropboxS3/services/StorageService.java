@@ -7,9 +7,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.CopyObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,4 +35,19 @@ public class StorageService {
         amazonS3.putObject("projetoifpe","/arquivos/"+arquivo.getOriginalFilename(),file);
     }
 
+    public List<S3ObjectSummary> listarArquivos() {
+        ListObjectsV2Result result = amazonS3.listObjectsV2("projetoifpe");
+        return  result.getObjectSummaries();
+//        for (S3ObjectSummary os : objects) {
+//            System.out.println("* " + os.getKey());
+        }
+
+
+    public void deletarArquivo(String nome) {
+        amazonS3.deleteObject("projetoifpe", nome);
+    }
+
+    public void editarArquivo(String nomeAntigo, String nomeNovo) {
+        amazonS3.copyObject("projetoifpe", "/"+nomeAntigo, "projetoifpe", "/"+nomeNovo);
+    }
 }
