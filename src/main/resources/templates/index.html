@@ -61,6 +61,25 @@
         </div>
     </div>
 
+
+    <div class="contatiner col-sm-8 col-md-12 col-md-offset-2">
+        <div th:if="${#lists.isEmpty(listaArquivos)}">Nenhum arquivo adicionado</div>
+        <table class="table table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>data upload</th>
+                <th>Tamanho</th>
+            </tr>
+            <tr th:each="cont : ${listaArquivos}">
+                <td th:text="${cont.getKey()}"></td>
+                <td th:text="${cont.getLastModified()}"></td>
+                <td th:text="${cont.getSize()}"></td>
+                <td><a th:href="@{/editarContato(id=${cont.getKey()})}">Editar</a>&nbsp;&nbsp;
+                    <a th:href="@{/removerContato(id=${cont.getKey()})}">Remover</a></td>
+            </tr>
+        </table>
+        <hr />
+    </div>
 </div>
 
 

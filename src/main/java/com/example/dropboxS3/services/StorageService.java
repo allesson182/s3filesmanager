@@ -39,8 +39,8 @@ public class StorageService {
         ListObjectsV2Result result = amazonS3.listObjectsV2("projetoifpe");
         return  result.getObjectSummaries();
 //        for (S3ObjectSummary os : objects) {
-//            System.out.println("* " + os.getKey());
-        }
+//            System.out.println("* " + os.);
+       }
 
 
     public void deletarArquivo(String nome) {
