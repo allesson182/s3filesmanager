@@ -4,14 +4,15 @@ import com.example.dropboxS3.services.ArquivosService;
 import com.example.dropboxS3.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 
-@RestController
-@RequestMapping("/arquivo")
+@Controller
 public class ArquivosController {
 
     @Autowired
@@ -20,7 +21,7 @@ public class ArquivosController {
     @Autowired
     StorageService storageService;
 
-    @PostMapping()
+    @PostMapping("/arquivo")
     public void uploadAquivo(@RequestParam MultipartFile arquivo){
         arquivosService.salvarArquivo(arquivo);
         storageService.uploadArquivo(arquivo);
@@ -48,7 +49,7 @@ public class ArquivosController {
 
     }
 
-    @PutMapping()
+    @PutMapping("/arquivo")
     public ResponseEntity editarArquivo(@RequestHeader String nomeAntigo, @RequestHeader String nomeNovo){
         try{
             storageService.editarArquivo(nomeAntigo, nomeNovo);
@@ -57,8 +58,6 @@ public class ArquivosController {
         }
         return ResponseEntity.ok().build();
     }
-
-
 
 
 }
