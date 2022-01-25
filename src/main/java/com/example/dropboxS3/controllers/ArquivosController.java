@@ -66,7 +66,7 @@ public class ArquivosController {
             model.addAttribute("listaArquivos",storageService.listarArquivos());
             return "home";
         }
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/editararquivo")

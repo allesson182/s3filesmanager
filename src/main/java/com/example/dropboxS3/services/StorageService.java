@@ -54,8 +54,9 @@ public class StorageService {
         amazonS3.deleteObject("projetoifpe", nome);
     }
 
-    public void editarArquivo(String nomeAntigo, String nomeNovo) {
+    public String editarArquivo(String nomeAntigo, String nomeNovo) {
         amazonS3.copyObject("projetoifpe", "/" + nomeAntigo, "projetoifpe", "/" + nomeNovo);
+        return "redirect:/";
     }
 
     public void baixarArquivo(String nome) throws MalformedURLException {

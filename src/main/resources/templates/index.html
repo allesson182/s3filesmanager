@@ -184,12 +184,10 @@
                     <th>Ações</th>
                 </tr>
                 <tr th:each="cont : ${listaArquivos}">
-                    <td th:text="${cont.getKey()}"></td>
+                    <td><span id="nome" th:text="${cont.getKey()}"></span></td>
                     <td th:text="${cont.getLastModified()}"></td>
                     <td> <span class="size" th:text="${cont.getSize()} + kb"></span></td>
-                    <td><a th:href="@{/editararquivo(nome=${cont.getKey()})}"><i id="botao-edit"
-                                class="bi bi-pencil"></i></a>
-                        <a th:href="@{/deletararquivo(nome=${cont.getKey()})}"><i id="botao-trash"
+                    <td><a th:href="@{/deletararquivo(nome=${cont.getKey()})}"><i id="botao-trash"
                                 class="bi bi-trash"></i></a>
                         <a th:href="@{/baixararquivo(nome=${cont.getKey()})}"><i id="botao-download"
                                 class="bi bi-download"></i></a>
@@ -233,6 +231,7 @@
         for (let i = 0; i < collection.length; i++) {
             collection.item(i).innerHTML = bytesToSize(collection.item(i).outerHTML.toString().replace(/\D/g, ""))
         }
+
     </script>
 
 </body>
