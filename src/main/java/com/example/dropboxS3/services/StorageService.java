@@ -38,7 +38,7 @@ public class StorageService {
     }
 
     public void uploadArquivo(MultipartFile arquivo) {
-        File file = new File(this.raiz+"/arquivos/" + arquivo.getOriginalFilename());
+        File file = new File(this.raiz+"\\arquivos\\" + arquivo.getOriginalFilename());
         amazonS3.putObject("projetoifpe", arquivo.getOriginalFilename(), file);
     }
 
@@ -59,7 +59,7 @@ public class StorageService {
         return "redirect:/";
     }
 
-    public void baixarArquivo(String nome) throws MalformedURLException {
+    public void baixarArquivo(String nome)  {
         File localFile = new File(this.raiz+"/download/"+nome);
         ObjectMetadata object = amazonS3.getObject(new GetObjectRequest("projetoifpe", nome), localFile);
     }

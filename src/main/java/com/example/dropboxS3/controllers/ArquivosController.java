@@ -48,7 +48,7 @@ public class ArquivosController {
             model.addAttribute("message", e.getMessage());
             return "index";
         }
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/buckets")
@@ -64,7 +64,7 @@ public class ArquivosController {
         }catch (Exception e){
             model.addAttribute("message", e.getMessage());
             model.addAttribute("listaArquivos",storageService.listarArquivos());
-            return "home";
+            return "/";
         }
         return "redirect:/";
     }
@@ -77,9 +77,9 @@ public class ArquivosController {
         }catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             model.addAttribute("listaArquivos",storageService.listarArquivos());
-            return "home";
+            return "/";
         }
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/baixararquivo")
