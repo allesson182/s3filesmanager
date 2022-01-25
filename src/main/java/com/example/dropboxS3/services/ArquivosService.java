@@ -2,9 +2,11 @@ package com.example.dropboxS3.services;
 
 import com.amazonaws.services.s3.AmazonS3;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +31,14 @@ public class ArquivosService {
         } catch (IOException e) {
             throw new RuntimeException("erro ao salvar arquivo", e);
         }
+    }
+    public ByteArrayResource baixarArquivo(String nome) throws IOException {
+        Path diretorioPath = Paths.get(this.raiz, "download");
+        Path arquivoPath = diretorioPath.resolve(nome);
+        File file =  arquivoPath.toFile();
+
+        Path path = Paths.get(file.getAbsolutePath());
+        return  new ByteArrayResource(Files.readAllBytes(path));
 
 
 

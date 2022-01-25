@@ -8,18 +8,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-@CrossOrigin(origins = "*")
-@RequestMapping("/")
+
 public class GeralController {
 
-    @Autowired
-    StorageService storageService;
 
 
-    @GetMapping("home")
-    public String home(Model model) {
-        model.addAttribute("listaArquivos",storageService.listarArquivos());
-        return "index";
-    }
+
 }

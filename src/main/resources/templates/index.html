@@ -12,7 +12,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-        <a class="navbar-brand" href="/">Thymeleaf - Bootstrap Dropzone</a>
+        <a class="navbar-brand" href="/">DropBox fuleiro</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -48,13 +48,13 @@
             </div>
 
             <div id="dropzone">
-                <form action="/upload" class="dropzone needsclick" id="demo-upload">
+                <form METHOD="post" action="/arquivo" class="dropzone needsclick" id="file" name="file" enctype="multipart/form-data">
 
                     <div class="dz-message needsclick">
                         <button type="button" class="dz-button">Arraste arquivos aqui ou clique para fazer upload.</button>
                         <br/>
                     </div>
-
+                    <button type="submit">Enviar</button>
                 </form>
             </div>
 
@@ -69,13 +69,15 @@
                 <th>Nome</th>
                 <th>data upload</th>
                 <th>Tamanho</th>
+                <th>Ações</th>
             </tr>
             <tr th:each="cont : ${listaArquivos}">
                 <td th:text="${cont.getKey()}"></td>
                 <td th:text="${cont.getLastModified()}"></td>
-                <td th:text="${cont.getSize()}"></td>
-                <td><a th:href="@{/editarContato(id=${cont.getKey()})}">Editar</a>&nbsp;&nbsp;
-                    <a th:href="@{/removerContato(id=${cont.getKey()})}">Remover</a></td>
+                <td> <span class="size" th:text="${cont.getSize()} + kb"></span></td>
+                <td><a th:href="@{/editararquivo(nome=${cont.getKey()})}">Editar</a>
+                    <a th:href="@{/deletararquivo(nome=${cont.getKey()})}">Remover</a>
+                    <a th:href="@{/baixararquivo(nome=${cont.getKey()})}">Download</a></td>
             </tr>
         </table>
         <hr />
@@ -94,11 +96,25 @@
 <script>
     Dropzone.autoDiscover = false;
 
-    $("#demo-upload").dropzone({
+    $("#file").dropzone({
         success : function(file, response) {
             toastr.success('File ' + file.name + ' uploaded successfully');
+            document.location.reload(true);
         }
     });
+
+    function bytesToSize(bytes) {
+
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        if (bytes == 0) return '0 Byte';
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+
+    const collection = document.getElementsByClassName("size");
+    for (let i = 0; i < collection.length; i++) {
+       collection.item(i).innerHTML = bytesToSize(collection.item(i).outerHTML.toString().replace(/\D/g, ""))
+    }
 </script>
 
 </body>

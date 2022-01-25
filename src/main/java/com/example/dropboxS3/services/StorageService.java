@@ -1,5 +1,6 @@
 package com.example.dropboxS3.services;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSCredentialsProviderChain;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -13,34 +14,40 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.List;
 
 @Service
 public class StorageService {
 
+    @Value("${dropbox.arquivos.raiz}")
+    private String raiz;
     private final AmazonS3 amazonS3 = AmazonS3ClientBuilder
             .standard()
             .withRegion(Regions.US_EAST_1)
             .build();
 
 
-    public List<Bucket> listarBuckets(){
-       return amazonS3.listBuckets();
+    public List<Bucket> listarBuckets() {
+        return amazonS3.listBuckets();
 
     }
-    public void uploadArquivo(MultipartFile arquivo){
-    File file = new File("C:\\\\teste2/arquivos/"+arquivo.getOriginalFilename());
 
-        amazonS3.putObject("projetoifpe","/arquivos/"+arquivo.getOriginalFilename(),file);
+    public void uploadArquivo(MultipartFile arquivo) {
+        File file = new File(this.raiz+"/arquivos/" + arquivo.getOriginalFilename());
+        amazonS3.putObject("projetoifpe", arquivo.getOriginalFilename(), file);
     }
 
     public List<S3ObjectSummary> listarArquivos() {
         ListObjectsV2Result result = amazonS3.listObjectsV2("projetoifpe");
-        return  result.getObjectSummaries();
+        return result.getObjectSummaries();
 //        for (S3ObjectSummary os : objects) {
 //            System.out.println("* " + os.);
-       }
+    }
 
 
     public void deletarArquivo(String nome) {
@@ -48,6 +55,12 @@ public class StorageService {
     }
 
     public void editarArquivo(String nomeAntigo, String nomeNovo) {
-        amazonS3.copyObject("projetoifpe", "/"+nomeAntigo, "projetoifpe", "/"+nomeNovo);
+        amazonS3.copyObject("projetoifpe", "/" + nomeAntigo, "projetoifpe", "/" + nomeNovo);
     }
+
+    public void baixarArquivo(String nome) throws MalformedURLException {
+        File localFile = new File(this.raiz+"/download/"+nome);
+        ObjectMetadata object = amazonS3.getObject(new GetObjectRequest("projetoifpe", nome), localFile);
+    }
+
 }
