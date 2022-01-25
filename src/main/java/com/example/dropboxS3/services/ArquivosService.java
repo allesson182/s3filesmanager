@@ -43,4 +43,10 @@ public class ArquivosService {
 
 
     }
+
+    public void limpar(String originalFilename) {
+        Path diretorioPath = Paths.get(this.raiz, "arquivos");
+        Path arquivoPath = diretorioPath.resolve(originalFilename);
+        arquivoPath.toFile().delete();
+    }
 }
